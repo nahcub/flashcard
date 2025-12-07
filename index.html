@@ -173,7 +173,7 @@
 
     <div class="controls">
         <button id="prev-btn" onclick="prevCard()">← 이전</button>
-        <div class="counter" id="counter">1 / 14</div>
+        <div class="counter" id="counter">1 / 50</div>
         <button id="next-btn" onclick="nextCard()">다음 →</button>
     </div>
 
@@ -181,88 +181,204 @@
         // 데이터셋 (제공해주신 표 내용)
         const flashcards = [
             {
-                front: "자중손실 (Deadweight Loss, DWL)",
-                back: `<strong>[한 줄 설명]</strong><br>시장이 자원배분을 효율적으로 하지 못할 때 발생하는 총잉여의 손실.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[원인 및 결과]</strong><br>시장의 가격 왜곡(예: 조세, 독점)으로 인해 발생하며, 탄력성이 클수록 손실이 커집니다.`
+                front: "외부효과 (Externality)",
+                back: `<strong>[정의 및 설명]</strong><br>한 사람의 행위가 다른 사람에게 영향을 미쳤음에도 대가를 받거나 보상하지 않는 경우 [1].`
             },
             {
-                front: "교정적 조세 (Pigouvian tax)",
-                back: `<strong>[한 줄 설명]</strong><br>부정적 외부효과로 인해 흔들린 자원배분을 '정상(사회적 최적)'으로 교정하기 위한 세금.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[효과]</strong><br>비효율적 균형을 올바르게 이동시켜 오히려 자중손실(DWL)을 제거하고 효율성을 회복시킵니다.`
+                front: "긍정적 외부효과의 결과",
+                back: `<strong>[정의 및 설명]</strong><br>제3자에게 미치는 영향을 고려하지 않아 <strong>과소 발생</strong>함 [1].`
             },
             {
-                front: "예금통화 승수",
-                back: `<strong>[한 줄 설명]</strong><br>중앙은행이 공급한 본원통화로 은행들이 예금을 얼마나 "불려서" 통화를 창출하는지 보여주는 비율.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[공식]</strong><br>예금통화 승수 = 1 / 지급준비율`
+                front: "부정적 외부효과의 결과",
+                back: `<strong>[정의 및 설명]</strong><br>제3자에게 미치는 영향을 고려하지 않아 <strong>과다 발생</strong>함 [1].`
             },
             {
-                front: "실질이자율 (Real Interest Rate)",
-                back: `<strong>[한 줄 설명]</strong><br>명목이자율에서 물가상승률을 뺀 값.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[특징]</strong><br>중앙은행은 실질이자율을 낮춰 투자를 유도합니다. 화폐 중립성이 성립하면 명목이자율만 변하고 실질이자율은 변하지 않습니다.`
+                front: "생산의 부정적 외부효과 해결 방안",
+                back: `<strong>[정의 및 설명]</strong><br>조세(벌금)를 부과하여 사적 비용을 상승시킴 [1].`
             },
             {
-                front: "승수효과 (Multiplier Effect)",
-                back: `<strong>[한 줄 설명]</strong><br>정부지출 등 자율지출이 1만큼 증가했을 때, 국민소득(Y)이 몇 배로 증가하는지를 나타내는 지표.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[원리]</strong><br>'누군가의 지출 = 누군가의 소득'이라는 원리로 소득이 반복적으로 증폭되어 총수요를 증가시킵니다.`
+                front: "생산의 긍정적 외부효과 해결 방안",
+                back: `<strong>[정의 및 설명]</strong><br>보조금을 지급하여 사적 비용을 하락시킴 [1].`
             },
             {
-                front: "구축 효과 (Crowding Out Effect)",
-                back: `<strong>[한 줄 설명]</strong><br>정부 지출 증가가 금리 상승을 유발하여, 민간 투자(총수요)를 위축시키는 현상.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[결과]</strong><br>정부가 민간을 '밀어냄'으로써 재정정책의 효과가 일부 상쇄됩니다.`
+                front: "교정적 조세 (=피구세, Corrective Tax)",
+                back: `<strong>[정의 및 설명]</strong><br>부정적 외부효과로 인해 흔들린 자원배분을 '정상(사회적 최적)'으로 교정하기 위한 세금 [1].`
             },
             {
-                front: "균형재정 승수",
-                back: `<strong>[한 줄 설명]</strong><br>정부지출과 조세를 같은 금액만큼 동시에 증가시킬 때 국민소득이 변하는 크기.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[값]</strong><br>승수는 1입니다. (재정 규모가 10조 늘면 국민소득도 10조 늠)`
+                front: "교정적 조세가 DWL을 제거하는 이유",
+                back: `<strong>[정의 및 설명]</strong><br>원래 비효율적인 균형(과잉 생산)을 올바르게 이동시켜 오히려 자중손실을 제거하기 때문 [1].`
             },
             {
-                front: "누진세 (Progressive Tax)",
-                back: `<strong>[한 줄 설명]</strong><br>소득이 증가함에 따라 한계세율과 평균세율이 모두 증가하는 조세.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[장단점]</strong><br>형평성은 증가하지만 효율성은 감소합니다. 경기 변동 시 자동안정화 기능이 있습니다.`
+                front: "일반적인 세금의 효과",
+                back: `<strong>[정의 및 설명]</strong><br>원래 효율적인 균형을 왜곡하여 자중손실(DWL)을 발생시킴 [1], [2].`
             },
             {
-                front: "역진세 (Regressive Tax)",
-                back: `<strong>[한 줄 설명]</strong><br>소득이 증가함에 따라 세율 부담이 오히려 감소하는 조세 구조.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[예시]</strong><br>소비세가 대표적입니다. 저소득층은 소득 대비 소비 비율이 높아 세금 부담 비율이 더 큽니다.`
+                front: "배제성 (Excludability)",
+                back: `<strong>[정의 및 설명]</strong><br>다른 사람이 내가 가진 재화를 소비하는 것을 막을 수 있는지의 여부 [3].`
             },
             {
-                front: "공유지의 비극",
-                back: `<strong>[한 줄 설명]</strong><br>주인이 없는(배제 불가능) 공유자원을 서로 남용하여 결국 자원이 고갈되는 현상.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[특징]</strong><br>자원이 '경합적'이기 때문에 발생합니다. (예: 목초지, 남획)`
+                front: "경합성 (Rivalry)",
+                back: `<strong>[정의 및 설명]</strong><br>한 사람이 소비하면 다른 사람의 소비가 감소하는지의 여부 [3].`
             },
             {
-                front: "반공유지의 비극",
-                back: `<strong>[한 줄 설명]</strong><br>너무 많은 소유권/허가권이 설정되어, 아무도 자원을 제대로 활용하지 못하고 방치되는 현상.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[비유]</strong><br>사공이 너무 많아 배가 산으로도 못 가고 멈춰있는 상태.`
+                front: "사적 재화 (Private Good)",
+                back: `<strong>[정의 및 설명]</strong><br>배제 가능하며 경합적인 재화 [3].`
             },
             {
-                front: "필립스 곡선",
-                back: `<strong>[한 줄 설명]</strong><br>인플레이션율과 실업률 간의 역(-)의 상관관계를 보여주는 곡선.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[기간별 특징]</strong><br>단기에는 우하향(상충관계)하지만, 장기에는 자연실업률 수준에서 수직이 됩니다.`
+                front: "공공재 (Public Good)",
+                back: `<strong>[정의 및 설명]</strong><br><strong>배제 불가능</strong>하고 <strong>비경합적인</strong> 재화 [3].`
             },
             {
-                front: "규모의 경제",
-                back: `<strong>[한 줄 설명]</strong><br>생산량이 늘어날수록 장기 평균비용이 감소하는 현상.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[결과]</strong><br>한 기업이 시장 전체를 담당하는 것이 효율적인 '자연 독점'의 원인이 됩니다.`
+                front: "공공재의 문제점",
+                back: `<strong>[정의 및 설명]</strong><br>배제 불가능성 때문에 <strong>무임승차</strong> 문제가 발생하여 과소 공급됨 [3].`
+            },
+            {
+                front: "공유자원 (Common Resource)",
+                back: `<strong>[정의 및 설명]</strong><br><strong>배제 불가능</strong>하지만 <strong>경합적인</strong> 재화 [3].`
+            },
+            {
+                front: "공유자원의 문제점 (비극)",
+                back: `<strong>[정의 및 설명]</strong><br>경합성 때문에 과다 소비가 발생하여 자원이 고갈되는 비극이 발생할 수 있음 [3].`
+            },
+            {
+                front: "클럽재 (Club Good)",
+                back: `<strong>[정의 및 설명]</strong><br>배제 가능하나 비경합적인 재화 (예: 유료 온라인 강의) [3], [4].`
+            },
+            {
+                front: "공공재의 집합적 수요함수",
+                back: `<strong>[정의 및 설명]</strong><br>개별 수요함수를 <strong>수직적으로 합한</strong> 것 [4].`
+            },
+            {
+                front: "기초과학 연구",
+                back: `<strong>[정의 및 설명]</strong><br>일반적 지식은 공공재의 성격이 강해 기업이 무임승차하여 과소 공급됨 [4].`
+            },
+            {
+                front: "등대의 불빛",
+                back: `<strong>[정의 및 설명]</strong><br>배제 불가능하고 비경합적이므로 공공재의 성격을 가짐 [4].`
+            },
+            {
+                front: "엔클로저 운동",
+                back: `<strong>[정의 및 설명]</strong><br>공유지를 분할하여 사유지로 전환하고 배제 가능하게 만든 운동 [4], [5].`
+            },
+            {
+                front: "반공유지의 비극 (Anti-commons Tragedy)",
+                back: `<strong>[정의 및 설명]</strong><br>너무 많은 사람에게 배제권(소유권/허가권)이 있어서 자원이 방치되는 현상 [4].`
+            },
+            {
+                front: "혼잡한 도로",
+                back: `<strong>[정의 및 설명]</strong><br>공유자원의 한 예로, 배제는 어렵지만 혼잡할 경우 경합성이 발생함 [5].`
+            },
+            {
+                front: "경제학적 이윤",
+                back: `<strong>[정의 및 설명]</strong><br>수입에서 <strong>기회비용</strong>(명시적 비용 + 묵시적 비용)을 뺀 것 [6].`
+            },
+            {
+                front: "단기와 장기의 비용 구분 기준",
+                back: `<strong>[정의 및 설명]</strong><br>단기는 자본 투입이 고정되지만, 장기에는 노동과 자본 투입이 모두 가변적이라 고정비용이 없음 [7].`
+            },
+            {
+                front: "평균비용(AC) 공식",
+                back: `<strong>[정의 및 설명]</strong><br>평균고정비용(AFC)과 평균가변비용(AVC)을 합한 것 ($AC = AFC + AVC$) [7].`
+            },
+            {
+                front: "평균비용 최소화 조건",
+                back: `<strong>[정의 및 설명]</strong><br>한계비용(MC)과 평균비용(AC)이 같을 때 (MC = AC) [8].`
+            },
+            {
+                front: "규모의 경제 (Economies of Scale)",
+                back: `<strong>[정의 및 설명]</strong><br>생산량이 증가함에 따라 <strong>장기 평균비용이 감소</strong>하는 경우 [8].`
+            },
+            {
+                front: "자연 독점 (Natural Monopoly)",
+                back: `<strong>[정의 및 설명]</strong><br>규모의 경제가 광범위하여 한 기업이 시장 수요를 모두 감당하는 것이 더 효율적인 경우 [9].`
+            },
+            {
+                front: "자연 독점의 진입장벽",
+                back: `<strong>[정의 및 설명]</strong><br>생산 규모 자체가 진입장벽으로 작용함 [9].`
+            },
+            {
+                front: "경쟁시장의 이윤극대화 조건",
+                back: `<strong>[정의 및 설명]</strong><br>가격(P)과 한계비용(MC)이 같을 때 ($P = MC$) [10].`
+            },
+            {
+                front: "경쟁시장에서 단기 생산 중단 시점",
+                back: `<strong>[정의 및 설명]</strong><br>가격(P)이 평균가변비용(AVC)보다 낮을 때 (P < AVC) [10].`
+            },
+            {
+                front: "장기 무이윤 정리",
+                back: `<strong>[정의 및 설명]</strong><br>경쟁시장에서 장기적으로 가격, 한계비용, 평균비용이 모두 같아져 이윤이 0이 되는 현상 ($P = MC = AC$) [11].`
+            },
+            {
+                front: "이윤이 0인데 기업이 장기에 남아있는 이유",
+                back: `<strong>[정의 및 설명]</strong><br>수입이 명시적 비용과 기회비용을 모두 충당하기 때문 [11].`
+            },
+            {
+                front: "독점기업의 가격 결정",
+                back: `<strong>[정의 및 설명]</strong><br>가격(P)이 한계비용(MC)보다 높음 ($P > MC$) [9].`
+            },
+            {
+                front: "가격차별 (Price Discrimination)",
+                back: `<strong>[정의 및 설명]</strong><br>독점기업이 개별 소비자의 지불용의에 해당하는 가격을 설정하여 이윤을 늘리고 소비자 잉여를 감소시키는 행위 [12].`
+            },
+            {
+                front: "가격차별의 필수 조건",
+                back: `<strong>[정의 및 설명]</strong><br>지불용의에 따라 소비자를 분리할 수 있고 <strong>차익거래가 불가능</strong>해야 함 [12].`
+            },
+            {
+                front: "화폐의 3가지 기능",
+                back: `<strong>[정의 및 설명]</strong><br>지불 수단(교환의 매개 수단), 회계 단위, 가치 저장 [13].`
+            },
+            {
+                front: "법화 (Fiat Money)",
+                back: `<strong>[정의 및 설명]</strong><br>정부 명령에 따라 통용되는 화폐 (불 태환 화폐) [13].`
+            },
+            {
+                front: "예금통화 승수 (Money Multiplier)",
+                back: `<strong>[정의 및 설명]</strong><br>중앙은행이 공급한 본원통화로 은행들이 대출을 통해 통화를 창출하는 능력을 나타내는 비율 [14].`
+            },
+            {
+                front: "예금통화 승수 계산",
+                back: `<strong>[정의 및 설명]</strong><br>지급준비율의 역수 ($\frac{1}{\text{지급준비율}}$)와 같음 [15].`
             },
             {
                 front: "화폐 중립성",
-                back: `<strong>[한 줄 설명]</strong><br>통화량의 변화는 물가(명목변수)만 변화시킬 뿐, 생산량이나 고용(실질변수)에는 영향을 주지 못한다는 이론.<br><br>
-                       <div class='section-divider'></div>
-                       <strong>[전제]</strong><br>장기적인 관점에서의 고전적 이분성에 기초합니다.`
+                back: `<strong>[정의 및 설명]</strong><br>장기적으로 통화량 변화가 물가수준만 높이고 실질 변수(생산, 고용 등)에는 영향을 미치지 못한다는 이론 [16], [17].`
+            },
+            {
+                front: "고전적 이분성",
+                back: `<strong>[정의 및 설명]</strong><br>실물경제와 화폐경제가 분리되어 실질 변수는 화폐의 영향을 받지 않는다는 개념 [16], [17].`
+            },
+            {
+                front: "피셔 효과 (Fisher effect)",
+                back: `<strong>[정의 및 설명]</strong><br>인플레이션율이 상승한 만큼 명목이자율도 증가하여 실질이자율이 일정하게 유지되는 현상 (장기적으로 화폐 중립성 성립) [16], [18].`
+            },
+            {
+                front: "화폐 수량 방정식",
+                back: `<strong>[정의 및 설명]</strong><br>$M \times V = P \times Y$ (통화량 $\times$ 유통속도 = 물가수준 $\times$ 실질 GDP) [18].`
+            },
+            {
+                front: "총수요곡선이 우하향하는 이유",
+                back: `<strong>[정의 및 설명]</strong><br>물가 하락 시 자산효과, 이자율 효과, 환율 효과로 인해 소비, 투자, 순수출이 증가하기 때문 [19], [17].`
+            },
+            {
+                front: "승수효과 (Multiplier Effect)",
+                back: `<strong>[정의 및 설명]</strong><br>정부구입 등 지출 증가가 소득 증가를 유발하고 이것이 반복되어 총수요를 증폭시키는 현상 [20].`
+            },
+            {
+                front: "구축 효과 (Crowding Out Effect)",
+                back: `<strong>[정의 및 설명]</strong><br>정부 지출 증가 → 화폐 수요 증가 → 이자율 상승 → 민간 투자(총수요) 위축 [20].`
+            },
+            {
+                front: "균형재정 승수",
+                back: `<strong>[정의 및 설명]</strong><br>정부 지출과 조세를 같은 금액만큼 동시에 증감시킬 때 국민소득의 변화를 나타내는 승수 (값은 1) [21].`
+            },
+            {
+                front: "단기 필립스곡선 상관성",
+                back: `<strong>[정의 및 설명]</strong><br>실업률과 인플레이션율 간에 <strong>부(-)의 상관성</strong>이 존재함 [22].`
+            },
+            {
+                front: "장기 필립스곡선 형태",
+                back: `<strong>[정의 및 설명]</strong><br>자연실업률 수준에서 <strong>수직 형태</strong>를 가짐 [23].`
             }
         ];
 
