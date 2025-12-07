@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경제학 핵심 개념 플래시카드</title>
+    <style>
+        /* 기본 레이아웃 및 폰트 설정 */
+        body {
+            font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* 전체 페이지 스크롤 방지 */
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        /* 카드 전체 컨테이너 (위치 잡기용) */
+        .scene {
+            width: 90%;
+            max-width: 600px; /* PC에서도 너무 커지지 않게 제한 */
+            height: 400px; /* 높이 고정 (필요시 조정 가능) */
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        /* 실제 카드 (회전하는 주체) */
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        /* 카드가 뒤집혔을 때 클래스 */
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* 앞면/뒷면 공통 스타일 */
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            box-sizing: border-box;
+            background-color: white;
+            overflow-y: auto; /* 내용이 넘치면 스크롤 */
+        }
+
+        /* 스크롤바 디자인 (크롬/사파리) */
+        .card-face::-webkit-scrollbar {
+            width: 8px;
+        }
+        .card-face::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+
+        /* 앞면 스타일 */
+        .card-front {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            color: #2c3e50;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            border: 2px solid #e1e1e1;
+        }
+
+        .click-guide {
+            position: absolute;
+            bottom: 15px;
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: normal;
+        }
+
+        /* 뒷면 스타일 */
+        .card-back {
+            background-color: #4CAF50; /* 초록색 배경 */
+            color: white;
+            transform: rotateY(180deg);
+            text-align: left;
+            align-items: flex-start; /* 왼쪽 정렬 */
+            justify-content: flex-start; /* 상단 정렬 */
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .card-back strong {
+            color: #ffff00; /* 강조색 (노란색) */
+            font-size: 1.1em;
+        }
+        
+        .section-divider {
+            margin: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            width: 100%;
+        }
+
+        /* 컨트롤 버튼 영역 */
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background-color: #333;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .counter {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>경제학 핵심 개념 암기장</h1>
+
+    <div class="scene">
+        <div class="card" id="card">
+            <!-- 앞면 -->
+            <div class="card-face card-front">
+                <div id="front-text">로딩 중...</div>
+                <div class="click-guide">👆 카드를 클릭하여 정답 확인</div>
+            </div>
+            <!-- 뒷면 -->
+            <div class="card-face card-back">
+                <div id="back-text">
+                    <!-- 자바스크립트로 내용이 채워집니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prev-btn" onclick="prevCard()">← 이전</button>
+        <div class="counter" id="counter">1 / 14</div>
+        <button id="next-btn" onclick="nextCard()">다음 →</button>
+    </div>
+
+    <script>
+        // 데이터셋 (제공해주신 표 내용)
+        const flashcards = [
+            {
+                front: "자중손실 (Deadweight Loss, DWL)",
+                back: `<strong>[한 줄 설명]</strong><br>시장이 자원배분을 효율적으로 하지 못할 때 발생하는 총잉여의 손실.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[원인 및 결과]</strong><br>시장의 가격 왜곡(예: 조세, 독점)으로 인해 발생하며, 탄력성이 클수록 손실이 커집니다.`
+            },
+            {
+                front: "교정적 조세 (Pigouvian tax)",
+                back: `<strong>[한 줄 설명]</strong><br>부정적 외부효과로 인해 흔들린 자원배분을 '정상(사회적 최적)'으로 교정하기 위한 세금.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[효과]</strong><br>비효율적 균형을 올바르게 이동시켜 오히려 자중손실(DWL)을 제거하고 효율성을 회복시킵니다.`
+            },
+            {
+                front: "예금통화 승수",
+                back: `<strong>[한 줄 설명]</strong><br>중앙은행이 공급한 본원통화로 은행들이 예금을 얼마나 "불려서" 통화를 창출하는지 보여주는 비율.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[공식]</strong><br>예금통화 승수 = 1 / 지급준비율`
+            },
+            {
+                front: "실질이자율 (Real Interest Rate)",
+                back: `<strong>[한 줄 설명]</strong><br>명목이자율에서 물가상승률을 뺀 값.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[특징]</strong><br>중앙은행은 실질이자율을 낮춰 투자를 유도합니다. 화폐 중립성이 성립하면 명목이자율만 변하고 실질이자율은 변하지 않습니다.`
+            },
+            {
+                front: "승수효과 (Multiplier Effect)",
+                back: `<strong>[한 줄 설명]</strong><br>정부지출 등 자율지출이 1만큼 증가했을 때, 국민소득(Y)이 몇 배로 증가하는지를 나타내는 지표.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[원리]</strong><br>'누군가의 지출 = 누군가의 소득'이라는 원리로 소득이 반복적으로 증폭되어 총수요를 증가시킵니다.`
+            },
+            {
+                front: "구축 효과 (Crowding Out Effect)",
+                back: `<strong>[한 줄 설명]</strong><br>정부 지출 증가가 금리 상승을 유발하여, 민간 투자(총수요)를 위축시키는 현상.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[결과]</strong><br>정부가 민간을 '밀어냄'으로써 재정정책의 효과가 일부 상쇄됩니다.`
+            },
+            {
+                front: "균형재정 승수",
+                back: `<strong>[한 줄 설명]</strong><br>정부지출과 조세를 같은 금액만큼 동시에 증가시킬 때 국민소득이 변하는 크기.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[값]</strong><br>승수는 1입니다. (재정 규모가 10조 늘면 국민소득도 10조 늠)`
+            },
+            {
+                front: "누진세 (Progressive Tax)",
+                back: `<strong>[한 줄 설명]</strong><br>소득이 증가함에 따라 한계세율과 평균세율이 모두 증가하는 조세.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[장단점]</strong><br>형평성은 증가하지만 효율성은 감소합니다. 경기 변동 시 자동안정화 기능이 있습니다.`
+            },
+            {
+                front: "역진세 (Regressive Tax)",
+                back: `<strong>[한 줄 설명]</strong><br>소득이 증가함에 따라 세율 부담이 오히려 감소하는 조세 구조.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[예시]</strong><br>소비세가 대표적입니다. 저소득층은 소득 대비 소비 비율이 높아 세금 부담 비율이 더 큽니다.`
+            },
+            {
+                front: "공유지의 비극",
+                back: `<strong>[한 줄 설명]</strong><br>주인이 없는(배제 불가능) 공유자원을 서로 남용하여 결국 자원이 고갈되는 현상.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[특징]</strong><br>자원이 '경합적'이기 때문에 발생합니다. (예: 목초지, 남획)`
+            },
+            {
+                front: "반공유지의 비극",
+                back: `<strong>[한 줄 설명]</strong><br>너무 많은 소유권/허가권이 설정되어, 아무도 자원을 제대로 활용하지 못하고 방치되는 현상.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[비유]</strong><br>사공이 너무 많아 배가 산으로도 못 가고 멈춰있는 상태.`
+            },
+            {
+                front: "필립스 곡선",
+                back: `<strong>[한 줄 설명]</strong><br>인플레이션율과 실업률 간의 역(-)의 상관관계를 보여주는 곡선.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[기간별 특징]</strong><br>단기에는 우하향(상충관계)하지만, 장기에는 자연실업률 수준에서 수직이 됩니다.`
+            },
+            {
+                front: "규모의 경제",
+                back: `<strong>[한 줄 설명]</strong><br>생산량이 늘어날수록 장기 평균비용이 감소하는 현상.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[결과]</strong><br>한 기업이 시장 전체를 담당하는 것이 효율적인 '자연 독점'의 원인이 됩니다.`
+            },
+            {
+                front: "화폐 중립성",
+                back: `<strong>[한 줄 설명]</strong><br>통화량의 변화는 물가(명목변수)만 변화시킬 뿐, 생산량이나 고용(실질변수)에는 영향을 주지 못한다는 이론.<br><br>
+                       <div class='section-divider'></div>
+                       <strong>[전제]</strong><br>장기적인 관점에서의 고전적 이분성에 기초합니다.`
+            }
+        ];
+
+        let currentIndex = 0;
+        const cardElement = document.getElementById('card');
+        const frontText = document.getElementById('front-text');
+        const backText = document.getElementById('back-text');
+        const counter = document.getElementById('counter');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // 카드 내용 업데이트 함수
+        function updateCard() {
+            // 카드 뒤집힘 상태 초기화 (내용 바꿀 때 앞면부터 보이게)
+            cardElement.classList.remove('is-flipped');
+            
+            // 약간의 딜레이 후 내용 교체 (자연스러운 전환 위해)
+            setTimeout(() => {
+                const currentCard = flashcards[currentIndex];
+                frontText.textContent = currentCard.front;
+                backText.innerHTML = currentCard.back;
+                counter.textContent = `${currentIndex + 1} / ${flashcards.length}`;
+                
+                // 버튼 상태 업데이트
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === flashcards.length - 1;
+            }, 200);
+        }
+
+        // 다음 카드
+        function nextCard() {
+            if (currentIndex < flashcards.length - 1) {
+                currentIndex++;
+                updateCard();
+            }
+        }
+
+        // 이전 카드
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            }
+        }
+
+        // 카드 클릭 시 뒤집기 이벤트
+        cardElement.addEventListener('click', () => {
+            cardElement.classList.toggle('is-flipped');
+        });
+
+        // 초기 실행
+        updateCard();
+
+        // 키보드 방향키 지원 (편의성)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextCard();
+            if (e.key === 'ArrowLeft') prevCard();
+            if (e.key === ' ' || e.key === 'Enter') cardElement.classList.toggle('is-flipped');
+        });
+
+    </script>
+</body>
+</html>
